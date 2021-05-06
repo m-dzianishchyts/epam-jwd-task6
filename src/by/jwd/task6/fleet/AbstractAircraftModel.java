@@ -160,7 +160,7 @@ public abstract class AbstractAircraftModel implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + " {" +
-               "registrationCode='" + modelName + '\'' +
+               "modelName='" + modelName + '\'' +
                ", aircraftPerformance=" + aircraftPerformance +
                ", aircraftSize=" + aircraftSize +
                ", aircraftWeight=" + aircraftWeight +
