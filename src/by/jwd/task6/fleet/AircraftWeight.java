@@ -1,12 +1,18 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.HashUtil;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
 import static by.jwd.task6.fleet.AbstractAircraftModel.FINITE_POSITIVE_PREDICATE;
+import static by.jwd.task6.fleet.AbstractAircraftModel.INVALID_WEIGHT_PROPERTY_MESSAGE;
 
 public class AircraftWeight implements Serializable {
 
+    /**
+     * Aircraft weight comparators.
+     */
     public final static Comparator<AircraftWeight> EMPTY_WEIGHT_COMPARATOR =
             Comparator.comparing(AircraftWeight::getEmptyWeight);
     public final static Comparator<AircraftWeight> FUEL_CAPACITY_COMPARATOR =
@@ -15,8 +21,6 @@ public class AircraftWeight implements Serializable {
             Comparator.comparing(AircraftWeight::getLandingWeight);
     public final static Comparator<AircraftWeight> TAKEOFF_WEIGHT_COMPARATOR =
             Comparator.comparing(AircraftWeight::getTakeoffWeight);
-
-    private final static String INVALID_WEIGHT_PROPERTY_MESSAGE = "Weight property must be finite and positive.";
 
     private float emptyWeight;
     private float fuelCapacity;
@@ -76,14 +80,7 @@ public class AircraftWeight implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        int hashMultiplier = 31;
-        int shiftRange = Integer.SIZE / 2;
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(emptyWeight) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(fuelCapacity) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(landingWeight) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(takeoffWeight) >> shiftRange);
-        return hash;
+        return HashUtil.hashFrom(emptyWeight, fuelCapacity, landingWeight, takeoffWeight);
     }
 
     @Override

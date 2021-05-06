@@ -1,5 +1,7 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.HashUtil;
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
@@ -49,36 +51,56 @@ public abstract class AbstractAircraftModel implements Serializable {
     public final static Comparator<AbstractAircraftModel> TAKEOFF_WEIGHT_COMPARATOR =
             Comparator.comparing(AbstractAircraftModel::getAircraftWeight, AircraftWeight.TAKEOFF_WEIGHT_COMPARATOR);
 
-    final static Predicate<Float> FINITE_POSITIVE_PREDICATE = (number) -> number > 0 && Float.isFinite(number);
+    /**
+     * Aircraft model name comparator.
+     */
+    public final static Comparator<AbstractAircraftModel> MODEL_NAME_COMPARATOR =
+            Comparator.comparing(AbstractAircraftModel::getModelName);
 
-    private final static String NULL_AIRCRAFT_PERFORMANCE_MESSAGE = "Aircraft performance cannot be null.";
-    private final static String NULL_AIRCRAFT_SIZE_MESSAGE = "Aircraft size cannot be null.";
-    private final static String NULL_AIRCRAFT_WEIGHT_MESSAGE = "Aircraft weight cannot be null.";
-    private final static String NULL_REGISTRATION_CODE_MESSAGE = "Registration code cannot be null.";
+    /**
+     * Predicate for validating aircraft parameters.
+     */
+    protected final static Predicate<Float> FINITE_POSITIVE_PREDICATE =
+            (number) -> number > 0 && Float.isFinite(number);
 
-    private AircraftPerformance aircraftPerformance;
-    private AircraftSize aircraftSize;
-    private AircraftWeight aircraftWeight;
+    /**
+     * Exception messages.
+     */
+    protected final static String NULL_AIRCRAFT_PERFORMANCE_MESSAGE = "Aircraft performance cannot be null.";
+    protected final static String NULL_AIRCRAFT_SIZE_MESSAGE = "Aircraft size cannot be null.";
+    protected final static String NULL_AIRCRAFT_WEIGHT_MESSAGE = "Aircraft weight cannot be null.";
+    protected final static String NULL_MODEL_NAME_MESSAGE = "Model name cannot be null.";
 
-    private String registrationCode;
+    /**
+     * Package-common exception messages.
+     */
+    protected final static String INVALID_SIZE_PROPERTY_MESSAGE = "Size property must be finite and positive.";
+    protected final static String INVALID_WEIGHT_PROPERTY_MESSAGE = "Weight property must be finite and positive.";
+    protected final static String INVALID_FLIGHT_PROPERTY_MESSAGE = "Flight property must be finite and positive.";
+
+    protected AircraftPerformance aircraftPerformance;
+    protected AircraftSize aircraftSize;
+    protected AircraftWeight aircraftWeight;
+    protected String modelName;
 
     public AbstractAircraftModel(AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
-                                 AircraftWeight aircraftWeight, String registrationCode)
+                                 AircraftWeight aircraftWeight, String modelName)
             throws IllegalArgumentException {
         ValidationHelper.validateArgument(aircraftPerformance, Objects::nonNull, NULL_AIRCRAFT_PERFORMANCE_MESSAGE);
         ValidationHelper.validateArgument(aircraftSize, Objects::nonNull, NULL_AIRCRAFT_SIZE_MESSAGE);
         ValidationHelper.validateArgument(aircraftWeight, Objects::nonNull, NULL_AIRCRAFT_WEIGHT_MESSAGE);
-        ValidationHelper.validateArgument(registrationCode, Objects::nonNull, NULL_REGISTRATION_CODE_MESSAGE);
+        ValidationHelper.validateArgument(modelName, Objects::nonNull, NULL_MODEL_NAME_MESSAGE);
         this.aircraftPerformance = aircraftPerformance;
         this.aircraftSize = aircraftSize;
         this.aircraftWeight = aircraftWeight;
-        this.registrationCode = registrationCode;
+        this.modelName = modelName;
     }
 
     public AbstractAircraftModel() {
         aircraftPerformance = new AircraftPerformance();
         aircraftSize = new AircraftSize();
-        registrationCode = "";
+        aircraftWeight = new AircraftWeight();
+        modelName = "";
     }
 
     public AircraftPerformance getAircraftPerformance() {
@@ -108,25 +130,18 @@ public abstract class AbstractAircraftModel implements Serializable {
         this.aircraftWeight = aircraftWeight;
     }
 
-    public String getRegistrationCode() {
-        return registrationCode;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setRegistrationCode(String registrationCode) throws IllegalArgumentException {
-        ValidationHelper.validateArgument(registrationCode, Objects::nonNull, NULL_REGISTRATION_CODE_MESSAGE);
-        this.registrationCode = registrationCode;
+    public void setModelName(String modelName) throws IllegalArgumentException {
+        ValidationHelper.validateArgument(modelName, Objects::nonNull, NULL_MODEL_NAME_MESSAGE);
+        this.modelName = modelName;
     }
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        int hashMultiplier = 31;
-        int shiftRange = Integer.SIZE / 2;
-        hash = hash * hashMultiplier + (aircraftPerformance.hashCode() >> shiftRange);
-        hash = hash * hashMultiplier + (aircraftSize.hashCode() >> shiftRange);
-        hash = hash * hashMultiplier + (aircraftWeight.hashCode() >> shiftRange);
-        hash = hash * hashMultiplier + (registrationCode.hashCode() >> shiftRange);
-        return hash;
+        return HashUtil.hashFrom(aircraftPerformance, aircraftSize, aircraftWeight, modelName);
     }
 
     @Override
@@ -139,13 +154,13 @@ public abstract class AbstractAircraftModel implements Serializable {
         }
         AbstractAircraftModel that = (AbstractAircraftModel) o;
         return aircraftPerformance.equals(that.aircraftPerformance) && aircraftSize.equals(that.aircraftSize)
-               && aircraftWeight.equals(that.aircraftWeight) && registrationCode.equals(that.registrationCode);
+               && aircraftWeight.equals(that.aircraftWeight) && modelName.equals(that.modelName);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + " {" +
-               "registrationCode='" + registrationCode + '\'' +
+               "registrationCode='" + modelName + '\'' +
                ", aircraftPerformance=" + aircraftPerformance +
                ", aircraftSize=" + aircraftSize +
                ", aircraftWeight=" + aircraftWeight +

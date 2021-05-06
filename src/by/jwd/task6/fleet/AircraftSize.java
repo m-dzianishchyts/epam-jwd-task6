@@ -1,12 +1,18 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.HashUtil;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
 import static by.jwd.task6.fleet.AbstractAircraftModel.FINITE_POSITIVE_PREDICATE;
+import static by.jwd.task6.fleet.AbstractAircraftModel.INVALID_SIZE_PROPERTY_MESSAGE;
 
 public class AircraftSize implements Serializable {
 
+    /**
+     * Aircraft size comparators.
+     */
     public final static Comparator<AircraftSize> FUSELAGE_LENGTH_COMPARATOR =
             Comparator.comparing(AircraftSize::getFuselageLength);
     public final static Comparator<AircraftSize> FUSELAGE_WIDTH_COMPARATOR =
@@ -17,8 +23,6 @@ public class AircraftSize implements Serializable {
             Comparator.comparing(AircraftSize::getOverallLength);
     public final static Comparator<AircraftSize> OVERALL_WIDTH_COMPARATOR =
             Comparator.comparing(AircraftSize::getOverallWidth);
-
-    private final static String INVALID_SIZE_PROPERTY_MESSAGE = "Size property must be finite and positive.";
 
     private float fuselageLength;
     private float fuselageWidth;
@@ -90,15 +94,7 @@ public class AircraftSize implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        int hashMultiplier = 31;
-        int shiftRange = Integer.SIZE / 2;
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(fuselageLength) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(fuselageWidth) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(overallHeight) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(overallLength) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(overallWidth) >> shiftRange);
-        return hash;
+        return HashUtil.hashFrom(fuselageLength, fuselageWidth, overallHeight, overallLength, overallWidth);
     }
 
     @Override

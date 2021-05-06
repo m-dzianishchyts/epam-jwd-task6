@@ -1,12 +1,18 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.HashUtil;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
 import static by.jwd.task6.fleet.AbstractAircraftModel.FINITE_POSITIVE_PREDICATE;
+import static by.jwd.task6.fleet.AbstractAircraftModel.INVALID_FLIGHT_PROPERTY_MESSAGE;
 
 public class AircraftPerformance implements Serializable {
 
+    /**
+     * Aircraft flight performance comparators.
+     */
     public final static Comparator<AircraftPerformance> CRUISING_SPEED_COMPARATOR =
             Comparator.comparing(AircraftPerformance::getCruisingSpeed);
     public final static Comparator<AircraftPerformance> FUEL_CONSUMPTION_COMPARATOR =
@@ -15,8 +21,6 @@ public class AircraftPerformance implements Serializable {
             Comparator.comparing(AircraftPerformance::getMaxAttitude);
     public final static Comparator<AircraftPerformance> RANGE_COMPARATOR =
             Comparator.comparing(AircraftPerformance::getRange);
-
-    private final static String INVALID_FLIGHT_PROPERTY_MESSAGE = "Flight property must be finite and positive.";
 
     private float cruisingSpeed;
     private float hourlyFuelConsumption;
@@ -78,14 +82,7 @@ public class AircraftPerformance implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        int hashMultiplier = 31;
-        int shiftRange = Integer.SIZE / 2;
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(cruisingSpeed) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(hourlyFuelConsumption) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(maxAttitude) >> shiftRange);
-        hash = hash * hashMultiplier + (Float.floatToRawIntBits(range) >> shiftRange);
-        return hash;
+        return HashUtil.hashFrom(cruisingSpeed, hourlyFuelConsumption, maxAttitude, range);
     }
 
     @Override
