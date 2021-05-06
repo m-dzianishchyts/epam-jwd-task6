@@ -3,8 +3,21 @@ package by.jwd.task6.fleet;
 import by.jwd.task6.util.HashUtil;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class AirplaneModel extends AbstractAircraftModel implements Serializable {
+
+    /**
+     * Airplane model landing distance comparator.
+     */
+    public static final Comparator<AirplaneModel> LANDING_DISTANCE_COMPARATOR =
+            Comparator.comparing(AirplaneModel::getLandingDistance);
+
+    /**
+     * Airplane model takeoff distance comparator.
+     */
+    public static final Comparator<AirplaneModel> TAKEOFF_DISTANCE_COMPARATOR =
+            Comparator.comparing(AirplaneModel::getTakeoffDistance);
 
     private float landingDistance;
     private float takeoffDistance;
