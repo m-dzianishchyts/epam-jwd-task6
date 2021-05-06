@@ -7,12 +7,13 @@ import java.util.Objects;
 public class Airplane implements RegisteredAircraft {
 
     private AirplaneModel model;
-    private String registrationCode;
     private String notes;
+    private String registrationCode;
 
-    public Airplane(AirplaneModel model, String registrationCode) {
+    public Airplane(AirplaneModel model, String registrationCode, String notes) {
         this.model = model;
         this.registrationCode = registrationCode;
+        this.notes = notes;
     }
 
     public Airplane() {
