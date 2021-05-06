@@ -10,9 +10,9 @@ public class AirplaneModel extends AbstractAircraftModel implements Serializable
     private float takeoffDistance;
 
     public AirplaneModel(AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
-                         AircraftWeight aircraftWeight, String registrationCode, float takeoffDistance,
-                         float landingDistance) throws IllegalArgumentException {
-        super(aircraftPerformance, aircraftSize, aircraftWeight, registrationCode);
+                         AircraftWeight aircraftWeight, String manufacturer, String modelName,
+                         float takeoffDistance, float landingDistance) throws IllegalArgumentException {
+        super(aircraftPerformance, aircraftSize, aircraftWeight, manufacturer, modelName);
         ValidationHelper.validateArgument(takeoffDistance, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
         ValidationHelper.validateArgument(landingDistance, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
         this.takeoffDistance = takeoffDistance;
@@ -46,6 +46,7 @@ public class AirplaneModel extends AbstractAircraftModel implements Serializable
     public String toString() {
         return getClass().getSimpleName() + " {" +
                "modelName='" + modelName + '\'' +
+               ", manufacturer=" + manufacturer +
                ", aircraftPerformance=" + aircraftPerformance +
                ", aircraftSize=" + aircraftSize +
                ", aircraftWeight=" + aircraftWeight +

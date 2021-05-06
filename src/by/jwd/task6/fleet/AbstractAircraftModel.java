@@ -58,6 +58,12 @@ public abstract class AbstractAircraftModel implements Serializable {
             Comparator.comparing(AbstractAircraftModel::getModelName);
 
     /**
+     * Aircraft manufacturer comparator.
+     */
+    public final static Comparator<AbstractAircraftModel> MANUFACTURER_COMPARATOR =
+            Comparator.comparing(AbstractAircraftModel::getManufacturer);
+
+    /**
      * Predicate for validating aircraft parameters.
      */
     protected final static Predicate<Float> FINITE_POSITIVE_PREDICATE =
@@ -69,6 +75,7 @@ public abstract class AbstractAircraftModel implements Serializable {
     protected final static String NULL_AIRCRAFT_PERFORMANCE_MESSAGE = "Aircraft performance cannot be null.";
     protected final static String NULL_AIRCRAFT_SIZE_MESSAGE = "Aircraft size cannot be null.";
     protected final static String NULL_AIRCRAFT_WEIGHT_MESSAGE = "Aircraft weight cannot be null.";
+    protected final static String NULL_MANUFACTURER_MESSAGE = "Manufacturer cannot be null.";
     protected final static String NULL_MODEL_NAME_MESSAGE = "Model name cannot be null.";
 
     /**
@@ -81,18 +88,21 @@ public abstract class AbstractAircraftModel implements Serializable {
     protected AircraftPerformance aircraftPerformance;
     protected AircraftSize aircraftSize;
     protected AircraftWeight aircraftWeight;
+    protected String manufacturer;
     protected String modelName;
 
     public AbstractAircraftModel(AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
-                                 AircraftWeight aircraftWeight, String modelName)
+                                 AircraftWeight aircraftWeight, String manufacturer, String modelName)
             throws IllegalArgumentException {
         ValidationHelper.validateArgument(aircraftPerformance, Objects::nonNull, NULL_AIRCRAFT_PERFORMANCE_MESSAGE);
         ValidationHelper.validateArgument(aircraftSize, Objects::nonNull, NULL_AIRCRAFT_SIZE_MESSAGE);
         ValidationHelper.validateArgument(aircraftWeight, Objects::nonNull, NULL_AIRCRAFT_WEIGHT_MESSAGE);
+        ValidationHelper.validateArgument(manufacturer, Objects::nonNull, NULL_MANUFACTURER_MESSAGE);
         ValidationHelper.validateArgument(modelName, Objects::nonNull, NULL_MODEL_NAME_MESSAGE);
         this.aircraftPerformance = aircraftPerformance;
         this.aircraftSize = aircraftSize;
         this.aircraftWeight = aircraftWeight;
+        this.manufacturer = manufacturer;
         this.modelName = modelName;
     }
 
@@ -100,6 +110,7 @@ public abstract class AbstractAircraftModel implements Serializable {
         aircraftPerformance = new AircraftPerformance();
         aircraftSize = new AircraftSize();
         aircraftWeight = new AircraftWeight();
+        manufacturer = "";
         modelName = "";
     }
 
@@ -130,6 +141,15 @@ public abstract class AbstractAircraftModel implements Serializable {
         this.aircraftWeight = aircraftWeight;
     }
 
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        ValidationHelper.validateArgument(manufacturer, Objects::nonNull, NULL_MANUFACTURER_MESSAGE);
+        this.manufacturer = manufacturer;
+    }
+
     public String getModelName() {
         return modelName;
     }
@@ -141,7 +161,7 @@ public abstract class AbstractAircraftModel implements Serializable {
 
     @Override
     public int hashCode() {
-        return HashUtil.hashFrom(aircraftPerformance, aircraftSize, aircraftWeight, modelName);
+        return HashUtil.hashFrom(aircraftPerformance, aircraftSize, aircraftWeight, manufacturer, modelName);
     }
 
     @Override
@@ -154,13 +174,15 @@ public abstract class AbstractAircraftModel implements Serializable {
         }
         AbstractAircraftModel that = (AbstractAircraftModel) o;
         return aircraftPerformance.equals(that.aircraftPerformance) && aircraftSize.equals(that.aircraftSize)
-               && aircraftWeight.equals(that.aircraftWeight) && modelName.equals(that.modelName);
+               && aircraftWeight.equals(that.aircraftWeight) && manufacturer.equals(that.manufacturer)
+               && modelName.equals(that.modelName);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + " {" +
                "modelName='" + modelName + '\'' +
+               ", manufacturer=" + manufacturer +
                ", aircraftPerformance=" + aircraftPerformance +
                ", aircraftSize=" + aircraftSize +
                ", aircraftWeight=" + aircraftWeight +
