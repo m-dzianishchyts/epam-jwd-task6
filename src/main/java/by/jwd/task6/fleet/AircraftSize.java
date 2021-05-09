@@ -1,6 +1,7 @@
 package by.jwd.task6.fleet;
 
 import by.jwd.task6.util.HashUtil;
+import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -13,16 +14,18 @@ public class AircraftSize implements Serializable {
     /**
      * Aircraft size comparators.
      */
-    public final static Comparator<AircraftSize> FUSELAGE_LENGTH_COMPARATOR =
+    public static final Comparator<AircraftSize> FUSELAGE_LENGTH_COMPARATOR =
             Comparator.comparing(AircraftSize::getFuselageLength);
-    public final static Comparator<AircraftSize> FUSELAGE_WIDTH_COMPARATOR =
+    public static final Comparator<AircraftSize> FUSELAGE_WIDTH_COMPARATOR =
             Comparator.comparing(AircraftSize::getFuselageWidth);
-    public final static Comparator<AircraftSize> OVERALL_HEIGHT_COMPARATOR =
+    public static final Comparator<AircraftSize> OVERALL_HEIGHT_COMPARATOR =
             Comparator.comparing(AircraftSize::getOverallHeight);
-    public final static Comparator<AircraftSize> OVERALL_LENGTH_COMPARATOR =
+    public static final Comparator<AircraftSize> OVERALL_LENGTH_COMPARATOR =
             Comparator.comparing(AircraftSize::getOverallLength);
-    public final static Comparator<AircraftSize> OVERALL_WIDTH_COMPARATOR =
+    public static final Comparator<AircraftSize> OVERALL_WIDTH_COMPARATOR =
             Comparator.comparing(AircraftSize::getOverallWidth);
+
+    private static final long serialVersionUID = 7697395280221237183L;
 
     private float fuselageLength;
     private float fuselageWidth;
@@ -32,11 +35,11 @@ public class AircraftSize implements Serializable {
 
     public AircraftSize(float fuselageLength, float fuselageWidth, float overallHeight, float overallLength,
                         float overallWidth) throws IllegalArgumentException {
-        ValidationHelper.validateArgument(fuselageLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(fuselageWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(overallHeight, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(overallLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(overallWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(fuselageLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(fuselageWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(overallHeight, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(overallLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(overallWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
         this.fuselageLength = fuselageLength;
         this.fuselageWidth = fuselageWidth;
         this.overallHeight = overallHeight;
@@ -51,8 +54,8 @@ public class AircraftSize implements Serializable {
         return fuselageLength;
     }
 
-    public void setFuselageLength(float fuselageLength) {
-        ValidationHelper.validateArgument(fuselageLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+    public void setFuselageLength(float fuselageLength) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(fuselageLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
         this.fuselageLength = fuselageLength;
     }
 
@@ -60,8 +63,8 @@ public class AircraftSize implements Serializable {
         return fuselageWidth;
     }
 
-    public void setFuselageWidth(float fuselageWidth) {
-        ValidationHelper.validateArgument(fuselageWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+    public void setFuselageWidth(float fuselageWidth) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(fuselageWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
         this.fuselageWidth = fuselageWidth;
     }
 
@@ -69,8 +72,8 @@ public class AircraftSize implements Serializable {
         return overallHeight;
     }
 
-    public void setOverallHeight(float overallHeight) {
-        ValidationHelper.validateArgument(overallHeight, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+    public void setOverallHeight(float overallHeight) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(overallHeight, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
         this.overallHeight = overallHeight;
     }
 
@@ -78,8 +81,8 @@ public class AircraftSize implements Serializable {
         return overallLength;
     }
 
-    public void setOverallLength(float overallLength) {
-        ValidationHelper.validateArgument(overallLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+    public void setOverallLength(float overallLength) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(overallLength, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
         this.overallLength = overallLength;
     }
 
@@ -87,8 +90,8 @@ public class AircraftSize implements Serializable {
         return overallWidth;
     }
 
-    public void setOverallWidth(float overallWidth) {
-        ValidationHelper.validateArgument(overallWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
+    public void setOverallWidth(float overallWidth) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(overallWidth, FINITE_POSITIVE_PREDICATE, INVALID_SIZE_PROPERTY_MESSAGE);
         this.overallWidth = overallWidth;
     }
 

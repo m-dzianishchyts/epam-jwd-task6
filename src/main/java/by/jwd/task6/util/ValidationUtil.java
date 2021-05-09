@@ -1,11 +1,11 @@
-package by.jwd.task6.fleet;
+package by.jwd.task6.util;
 
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public final class ValidationHelper {
+public final class ValidationUtil {
 
-    private ValidationHelper() {
+    private ValidationUtil() {
     }
 
     public static <T> void validateArgument(T argument, Predicate<? super T> validity, String message)

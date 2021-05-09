@@ -1,6 +1,7 @@
 package by.jwd.task6.fleet;
 
 import by.jwd.task6.util.HashUtil;
+import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -13,14 +14,16 @@ public class AircraftWeight implements Serializable {
     /**
      * Aircraft weight comparators.
      */
-    public final static Comparator<AircraftWeight> EMPTY_WEIGHT_COMPARATOR =
+    public static final Comparator<AircraftWeight> EMPTY_WEIGHT_COMPARATOR =
             Comparator.comparing(AircraftWeight::getEmptyWeight);
-    public final static Comparator<AircraftWeight> FUEL_CAPACITY_COMPARATOR =
+    public static final Comparator<AircraftWeight> FUEL_CAPACITY_COMPARATOR =
             Comparator.comparing(AircraftWeight::getFuelCapacity);
-    public final static Comparator<AircraftWeight> LANDING_WEIGHT_COMPARATOR =
+    public static final Comparator<AircraftWeight> LANDING_WEIGHT_COMPARATOR =
             Comparator.comparing(AircraftWeight::getLandingWeight);
-    public final static Comparator<AircraftWeight> TAKEOFF_WEIGHT_COMPARATOR =
+    public static final Comparator<AircraftWeight> TAKEOFF_WEIGHT_COMPARATOR =
             Comparator.comparing(AircraftWeight::getTakeoffWeight);
+
+    private static final long serialVersionUID = 3935469395978153657L;
 
     private float emptyWeight;
     private float fuelCapacity;
@@ -29,10 +32,10 @@ public class AircraftWeight implements Serializable {
 
     public AircraftWeight(float emptyWeight, float fuelCapacity, float landingWeight, float takeoffWeight)
             throws IllegalArgumentException {
-        ValidationHelper.validateArgument(emptyWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(fuelCapacity, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(landingWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
-        ValidationHelper.validateArgument(takeoffWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(emptyWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(fuelCapacity, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(landingWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(takeoffWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
         this.emptyWeight = emptyWeight;
         this.fuelCapacity = fuelCapacity;
         this.landingWeight = landingWeight;
@@ -46,8 +49,8 @@ public class AircraftWeight implements Serializable {
         return emptyWeight;
     }
 
-    public void setEmptyWeight(float emptyWeight) {
-        ValidationHelper.validateArgument(emptyWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setEmptyWeight(float emptyWeight) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(emptyWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
         this.emptyWeight = emptyWeight;
     }
 
@@ -55,8 +58,8 @@ public class AircraftWeight implements Serializable {
         return fuelCapacity;
     }
 
-    public void setFuelCapacity(float fuelCapacity) {
-        ValidationHelper.validateArgument(fuelCapacity, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setFuelCapacity(float fuelCapacity) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(fuelCapacity, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
         this.fuelCapacity = fuelCapacity;
     }
 
@@ -64,8 +67,8 @@ public class AircraftWeight implements Serializable {
         return landingWeight;
     }
 
-    public void setLandingWeight(float landingWeight) {
-        ValidationHelper.validateArgument(landingWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setLandingWeight(float landingWeight) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(landingWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
         this.landingWeight = landingWeight;
     }
 
@@ -73,8 +76,8 @@ public class AircraftWeight implements Serializable {
         return takeoffWeight;
     }
 
-    public void setTakeoffWeight(float takeoffWeight) {
-        ValidationHelper.validateArgument(takeoffWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setTakeoffWeight(float takeoffWeight) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(takeoffWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
         this.takeoffWeight = takeoffWeight;
     }
 
