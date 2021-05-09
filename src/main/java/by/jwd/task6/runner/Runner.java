@@ -17,7 +17,7 @@ public final class Runner {
         List<Aircraft<AirplaneModel<?>>> airplanes = airline.collectAirplanes();
 
         var fuelConsumptionPredicate = airline
-                .createFiler(airplane -> airplane.getModel().getAircraftPerformance().getFuelConsumption(), 3000, 6000);
+                .createFilter(airplane -> airplane.getModel().getAircraftPerformance().getFuelConsumption(), 3000, 6000);
         var filteredAirplanes = airplanes.stream()
                                          .filter(fuelConsumptionPredicate)
                                          .sorted(Airline.RANGE_COMPARATOR

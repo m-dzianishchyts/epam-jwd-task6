@@ -201,8 +201,8 @@ public class Airline {
         }
     }
 
-    public Predicate<Aircraft<AirplaneModel<?>>> createFiler(Function<Aircraft<AirplaneModel<?>>, Number> extractor,
-                                                             double from, double to) throws IllegalArgumentException {
+    public Predicate<Aircraft<AirplaneModel<?>>> createFilter(Function<Aircraft<AirplaneModel<?>>, Number> extractor,
+                                                              double from, double to) throws IllegalArgumentException {
         ValidationUtil.validateArgument(extractor, Objects::nonNull, NULL_EXTRACTOR_MESSAGE);
         return (airplane) -> {
             Number providedValue = extractor.apply(airplane);
