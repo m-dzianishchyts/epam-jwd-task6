@@ -1,7 +1,7 @@
 package by.jwd.task6.airline;
 
 import by.jwd.task6.dao.DaoException;
-import by.jwd.task6.dao.serialization.AircraftSerializationDao;
+import by.jwd.task6.dao.impl.SerializationAircraftDao;
 import by.jwd.task6.fleet.Aircraft;
 import by.jwd.task6.fleet.AircraftDocument;
 import by.jwd.task6.fleet.AircraftPerformance;
@@ -120,11 +120,11 @@ public class Airline {
 
     private static Airline instance;
 
-    private final AircraftSerializationDao<Aircraft> aircraftDao;
+    private final SerializationAircraftDao<Aircraft> aircraftDao;
 
     private Airline() throws AirlineException {
         try {
-            aircraftDao = new AircraftSerializationDao<>(new File(SOURCE_FILE_PATH));
+            aircraftDao = new SerializationAircraftDao<>(new File(SOURCE_FILE_PATH));
         } catch (DaoException | ArgumentValidationException e) {
             throw new AirlineException(e.getMessage(), e);
         }
@@ -139,7 +139,7 @@ public class Airline {
 
     public Optional<Aircraft> findAircraftById(int id) throws AirlineException, ArgumentValidationException {
         try {
-            Optional<Aircraft> result = aircraftDao.find(id);
+            Optional<Aircraft> result = aircraftDao.findById(id);
             return result;
         } catch (DaoException e) {
             throw new AirlineException(e.getMessage(), e);
