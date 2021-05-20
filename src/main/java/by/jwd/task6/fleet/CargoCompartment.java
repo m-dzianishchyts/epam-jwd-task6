@@ -6,9 +6,9 @@ import by.jwd.task6.util.ValidationUtil;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import static by.jwd.task6.fleet.AbstractAircraftModel.FINITE_POSITIVE_PREDICATE;
+import static by.jwd.task6.fleet.Aircraft.FINITE_POSITIVE_PREDICATE;
 
-public class CargoCompartment implements AircraftModelFeature, Serializable {
+public class CargoCompartment implements Serializable {
 
     /**
      * Cargo compartment comparators.
@@ -34,7 +34,7 @@ public class CargoCompartment implements AircraftModelFeature, Serializable {
     private static final String INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE =
             "Cargo compartment property must be finite and positive.";
 
-    private static final long serialVersionUID = 5259189379858323845L;
+    private static final long serialVersionUID = -1035749343471924874L;
 
     private float hatchHeight;
     private float hatchWidth;

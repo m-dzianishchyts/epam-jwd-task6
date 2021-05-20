@@ -5,13 +5,13 @@ import java.util.Optional;
 
 public interface DataAccessObject<T> {
 
-    Optional<T> find(int id) throws Exception;
+    Optional<T> find(int id) throws DaoException, IllegalArgumentException;
 
-    void insert(T object) throws Exception;
+    void insert(T object) throws DaoException, IllegalArgumentException;
 
-    void remove(T object) throws Exception;
+    void remove(T object) throws DaoException, IllegalArgumentException;
 
-    void set(int id, T object) throws Exception;
+    void set(int id, T object) throws DaoException, IllegalArgumentException;
 
-    List<T> findAll() throws Exception;
+    List<T> findAll() throws DaoException;
 }

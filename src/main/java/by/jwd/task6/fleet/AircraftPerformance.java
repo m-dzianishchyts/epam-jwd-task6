@@ -6,8 +6,8 @@ import by.jwd.task6.util.ValidationUtil;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import static by.jwd.task6.fleet.AbstractAircraftModel.FINITE_POSITIVE_PREDICATE;
-import static by.jwd.task6.fleet.AbstractAircraftModel.INVALID_FLIGHT_PROPERTY_MESSAGE;
+import static by.jwd.task6.fleet.Aircraft.FINITE_POSITIVE_PREDICATE;
+import static by.jwd.task6.fleet.Aircraft.INVALID_FLIGHT_PROPERTY_MESSAGE;
 
 public class AircraftPerformance implements Serializable {
 
@@ -20,27 +20,27 @@ public class AircraftPerformance implements Serializable {
             Comparator.comparing(AircraftPerformance::getFuelConsumption);
     public static final Comparator<AircraftPerformance> MAX_ATTITUDE_COMPARATOR =
             Comparator.comparing(AircraftPerformance::getMaxAttitude);
-    public static final Comparator<AircraftPerformance> RANGE_COMPARATOR =
-            Comparator.comparing(AircraftPerformance::getRange);
+    public static final Comparator<AircraftPerformance> MAX_RANGE_COMPARATOR =
+            Comparator.comparing(AircraftPerformance::getMaxRange);
 
     private static final long serialVersionUID = 2308928128049295433L;
 
     private float cruisingSpeed;
     private float fuelConsumption;
     private float maxAttitude;
-    private float range;
+    private float maxRange;
 
-    public AircraftPerformance(float cruisingSpeed, float fuelConsumption, float maxAttitude, float range)
+    public AircraftPerformance(float cruisingSpeed, float fuelConsumption, float maxAttitude, float maxRange)
             throws IllegalArgumentException {
         ValidationUtil.validateArgument(cruisingSpeed, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
         ValidationUtil.validateArgument(fuelConsumption, FINITE_POSITIVE_PREDICATE,
                                         INVALID_FLIGHT_PROPERTY_MESSAGE);
         ValidationUtil.validateArgument(maxAttitude, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(range, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+        ValidationUtil.validateArgument(maxRange, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
         this.cruisingSpeed = cruisingSpeed;
         this.fuelConsumption = fuelConsumption;
         this.maxAttitude = maxAttitude;
-        this.range = range;
+        this.maxRange = maxRange;
     }
 
     public AircraftPerformance() {
@@ -64,13 +64,13 @@ public class AircraftPerformance implements Serializable {
         this.maxAttitude = maxAttitude;
     }
 
-    public float getRange() {
-        return range;
+    public float getMaxRange() {
+        return maxRange;
     }
 
-    public void setRange(float range) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(range, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
-        this.range = range;
+    public void setMaxRange(float maxRange) throws IllegalArgumentException {
+        ValidationUtil.validateArgument(maxRange, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+        this.maxRange = maxRange;
     }
 
     public float getFuelConsumption() {
@@ -85,7 +85,7 @@ public class AircraftPerformance implements Serializable {
 
     @Override
     public int hashCode() {
-        return HashUtil.hashFrom(cruisingSpeed, fuelConsumption, maxAttitude, range);
+        return HashUtil.hashFrom(cruisingSpeed, fuelConsumption, maxAttitude, maxRange);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class AircraftPerformance implements Serializable {
         return that.cruisingSpeed == cruisingSpeed
                && that.fuelConsumption == fuelConsumption
                && that.maxAttitude == maxAttitude
-               && that.range == range;
+               && that.maxRange == maxRange;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class AircraftPerformance implements Serializable {
                "cruisingSpeed=" + cruisingSpeed +
                ", hourlyFuelConsumption=" + fuelConsumption +
                ", maxAttitude=" + maxAttitude +
-               ", range=" + range +
+               ", maxRange=" + maxRange +
                '}';
     }
 }

@@ -6,7 +6,7 @@ import by.jwd.task6.util.ValidationUtil;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class PassengerCompartment implements AircraftModelFeature, Serializable {
+public class PassengerCompartment implements Serializable {
 
     /**
      * Passenger compartment comparators.
@@ -24,7 +24,7 @@ public class PassengerCompartment implements AircraftModelFeature, Serializable 
     private int passengersCapacity;
 
     public PassengerCompartment(int passengersCapacity) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(passengersCapacity, (n) -> n > 0, INVALID_PASSENGERS_CAPACITY_MESSAGE);
+        ValidationUtil.validateArgument(passengersCapacity, n -> n > 0, INVALID_PASSENGERS_CAPACITY_MESSAGE);
         this.passengersCapacity = passengersCapacity;
     }
 
@@ -36,7 +36,7 @@ public class PassengerCompartment implements AircraftModelFeature, Serializable 
     }
 
     public void setPassengersCapacity(int passengersCapacity) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(passengersCapacity, (n) -> n > 0, INVALID_PASSENGERS_CAPACITY_MESSAGE);
+        ValidationUtil.validateArgument(passengersCapacity, n -> n > 0, INVALID_PASSENGERS_CAPACITY_MESSAGE);
         this.passengersCapacity = passengersCapacity;
     }
 

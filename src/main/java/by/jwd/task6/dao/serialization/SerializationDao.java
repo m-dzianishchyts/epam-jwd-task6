@@ -19,19 +19,23 @@ public abstract class SerializationDao<T> implements DataAccessObject<T> {
      */
     protected static final String CANNOT_CREATE_SOURCE_FILE_MESSAGE = "Cannot create new source file.";
     protected static final String CLASS_CAST_EXCEPTION_MESSAGE = "An error occurred from class casting.";
+    protected static final String CLASS_NOT_FOUND_MESSAGE = "Class of a serialized object cannot be found.";
     protected static final String INVALID_ID_MESSAGE = "ID cannot be negative.";
     protected static final String IO_EXCEPTION_MESSAGE = "An error occurred while reading source file.";
     protected static final String NON_READABLE_SOURCE_FILE_MESSAGE = "Can not read source file.";
     protected static final String NULL_SOURCE_FILE_MESSAGE = "Source file cannot be null.";
-    protected static final String SOURCE_FILE_NOT_FOUND_MESSAGE = "Source file does not exist.";
+    protected static final String UPDATING_FAIL_MESSAGE = "File does not contain this object.";
 
-    protected final File source;
+    private final File source;
 
-    public SerializationDao(File source) throws DaoException, IllegalArgumentException {
+    protected SerializationDao(File source) throws DaoException, IllegalArgumentException {
         ValidationUtil.validateArgument(source, Objects::nonNull, NULL_SOURCE_FILE_MESSAGE);
         if (!source.exists()) {
             try {
-                source.createNewFile();
+                boolean fileCreatedSuccessfully = source.createNewFile();
+                if (!fileCreatedSuccessfully) {
+                    throw new DaoException(CANNOT_CREATE_SOURCE_FILE_MESSAGE);
+                }
             } catch (IOException e) {
                 throw new DaoException(CANNOT_CREATE_SOURCE_FILE_MESSAGE, e);
             }
@@ -70,7 +74,7 @@ public abstract class SerializationDao<T> implements DataAccessObject<T> {
 
     protected void updateFile(List<T> objects) throws DaoException {
         Objects.requireNonNull(objects);
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(source))) {
+        try (var outputStream = new ObjectOutputStream(new FileOutputStream(source))) {
             for (T object : objects) {
                 outputStream.writeObject(object);
             }

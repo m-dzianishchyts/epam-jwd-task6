@@ -1,7 +1,6 @@
 package by.jwd.task6.dao.serialization;
 
 import by.jwd.task6.dao.DaoException;
-import by.jwd.task6.fleet.AbstractAircraftModel;
 import by.jwd.task6.fleet.Aircraft;
 import by.jwd.task6.util.ValidationUtil;
 
@@ -15,41 +14,40 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AircraftSerializationDao<M extends AbstractAircraftModel<?>> extends SerializationDao<Aircraft<M>> {
+public class AircraftSerializationDao<A extends Aircraft> extends SerializationDao<A> {
 
     /**
      * Aircraft serialization exception messages.
      */
     protected static final String NULL_AIRCRAFT_MESSAGE = "Aircraft cannot be null.";
-    protected static final String UPDATING_FAIL_MESSAGE = "File does not contain this aircraft.";
 
     public AircraftSerializationDao(File source) throws DaoException, IllegalArgumentException {
         super(source);
     }
 
     @Override
-    public Optional<Aircraft<M>> find(int id) throws DaoException, ClassNotFoundException {
-        ValidationUtil.validateArgument(id, (n) -> n >= 0, INVALID_ID_MESSAGE);
-        List<Aircraft<M>> aircrafts = findAll();
+    public Optional<A> find(int id) throws DaoException {
+        ValidationUtil.validateArgument(id, n -> n >= 0, INVALID_ID_MESSAGE);
+        List<A> aircrafts = findAll();
         int targetIndex = defineIndexById(id, aircrafts);
         if (targetIndex < 0) {
             return Optional.empty();
         }
-        Aircraft<M> target = aircrafts.get(targetIndex);
+        var target = aircrafts.get(targetIndex);
         return Optional.of(target);
     }
 
-    public void insert(Aircraft<M> aircraft) throws DaoException, ClassNotFoundException, IllegalArgumentException {
+    public void insert(A aircraft) throws DaoException, IllegalArgumentException {
         ValidationUtil.validateArgument(aircraft, Objects::nonNull, NULL_AIRCRAFT_MESSAGE);
-        List<Aircraft<M>> aircrafts = findAll();
+        List<A> aircrafts = findAll();
         aircrafts.add(aircraft);
         updateFile(aircrafts);
     }
 
     @Override
-    public void remove(Aircraft<M> aircraft) throws DaoException, ClassNotFoundException {
+    public void remove(A aircraft) throws DaoException {
         ValidationUtil.validateArgument(aircraft, Objects::nonNull, NULL_AIRCRAFT_MESSAGE);
-        List<Aircraft<M>> aircrafts = findAll();
+        List<A> aircrafts = findAll();
         boolean removalResult = aircrafts.remove(aircraft);
         if (!removalResult) {
             throw new DaoException(UPDATING_FAIL_MESSAGE);
@@ -58,11 +56,10 @@ public class AircraftSerializationDao<M extends AbstractAircraftModel<?>> extend
     }
 
     @Override
-    public void set(int id, Aircraft<M> replacingAircraft) throws DaoException, ClassNotFoundException,
-            IllegalArgumentException {
+    public void set(int id, A replacingAircraft) throws DaoException, IllegalArgumentException {
         ValidationUtil.validateArgument(replacingAircraft, Objects::nonNull, NULL_AIRCRAFT_MESSAGE);
-        ValidationUtil.validateArgument(id, (n) -> n >= 0, INVALID_ID_MESSAGE);
-        List<Aircraft<M>> aircrafts = findAll();
+        ValidationUtil.validateArgument(id, n -> n >= 0, INVALID_ID_MESSAGE);
+        List<A> aircrafts = findAll();
         int targetIndex = defineIndexById(id, aircrafts);
         if (targetIndex < 0) {
             throw new DaoException(UPDATING_FAIL_MESSAGE);
@@ -72,31 +69,28 @@ public class AircraftSerializationDao<M extends AbstractAircraftModel<?>> extend
     }
 
     @SuppressWarnings({"unchecked", "InfiniteLoopStatement"})
-    public List<Aircraft<M>> findAll() throws DaoException, ClassNotFoundException {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(source))) {
-            List<Aircraft<M>> aircrafts = new ArrayList<>();
-            try {
+    public List<A> findAll() throws DaoException {
+        List<A> aircrafts = new ArrayList<>();
+        try (var inputStream = new ObjectInputStream(new FileInputStream(getSource()))) {
                 while (true) {
-                    Aircraft<M> aircraft = (Aircraft<M>) inputStream.readObject();
+                    var aircraft = (A) inputStream.readObject();
                     aircrafts.add(aircraft);
                 }
-            } catch (EOFException e) {
-                // Ok, end of file.
-            }
-            return aircrafts;
         } catch (EOFException e) {
-            return new ArrayList<>();
+            return aircrafts;
         } catch (IOException e) {
             throw new DaoException(IO_EXCEPTION_MESSAGE, e);
         } catch (ClassCastException e) {
             throw new DaoException(CLASS_CAST_EXCEPTION_MESSAGE, e);
+        } catch (ClassNotFoundException e) {
+            throw new DaoException(CLASS_NOT_FOUND_MESSAGE, e);
         }
     }
 
-    private int defineIndexById(int id, List<Aircraft<M>> aircrafts) {
+    private int defineIndexById(int id, List<A> aircrafts) {
         int targetIndex = -1;
-        for (int i = 0; i < aircrafts.size(); i++) {
-            Aircraft<M> candidate = aircrafts.get(i);
+        for (var i = 0; i < aircrafts.size(); i++) {
+            var candidate = aircrafts.get(i);
             if (id == candidate.getId()) {
                 targetIndex = i;
                 break;

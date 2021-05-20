@@ -6,8 +6,8 @@ import by.jwd.task6.util.ValidationUtil;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import static by.jwd.task6.fleet.AbstractAircraftModel.FINITE_POSITIVE_PREDICATE;
-import static by.jwd.task6.fleet.AbstractAircraftModel.INVALID_SIZE_PROPERTY_MESSAGE;
+import static by.jwd.task6.fleet.Aircraft.FINITE_POSITIVE_PREDICATE;
+import static by.jwd.task6.fleet.Aircraft.INVALID_SIZE_PROPERTY_MESSAGE;
 
 public class AircraftSize implements Serializable {
 
