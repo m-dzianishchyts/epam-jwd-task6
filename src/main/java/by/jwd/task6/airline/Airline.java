@@ -15,6 +15,7 @@ import by.jwd.task6.fleet.PassengerCompartment;
 import by.jwd.task6.util.ArgumentValidationException;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -112,9 +113,28 @@ public class Airline {
                                  PassengerCompartment.PASSENGER_CAPACITY_COMPARATOR);
 
     /**
+     * Aircraft to number functions.
+     */
+    public static final Function<Aircraft, Number> AIRCRAFT_PASSENGER_CAPACITY_FUNCTION = aircraft -> {
+        if (aircraft instanceof PassengerAircraft) {
+            var passengerAircraft = (PassengerAircraft) aircraft;
+            return passengerAircraft.getPassengerCompartment().getPassengersCapacity();
+        } else {
+            return 0;
+        }
+    };
+    public static final Function<Aircraft, Number> AIRCRAFT_LOAD_CAPACITY_FUNCTION = aircraft -> {
+        var aircraftWeight = aircraft.getAircraftWeight();
+        return aircraftWeight.getTakeoffWeight() - aircraftWeight.getEmptyWeight();
+    };
+
+    /**
      * Airline exception messages.
      */
     private static final String NULL_AIRCRAFT_VALUE_FUNCTION_MESSAGE = "Aircraft value function cannot be null.";
+    private static final String NULL_AIRCRAFT_PREDICATE_MESSAGE = "Aircraft predicate cannot be null.";
+    private static final String NULL_EMPTY_AIRCRAFT_COMPARATOR_MESSAGE = "Aircraft comparator cannot be null or empty.";
+    private static final String NULL_AIRCRAFT_COLLECTION_MESSAGE = "Aircraft collection cannot be null or empty.";
 
     private static final String SOURCE_FILE_PATH = "src/main/airplanes.ser";
 
@@ -189,6 +209,60 @@ public class Airline {
             var valueAsDouble = providedValue.doubleValue();
             return valueAsDouble > from && valueAsDouble < to;
         };
+    }
+
+    public double calculateTotal(Function<Aircraft, Number> aircraftValueFunction)
+            throws ArgumentValidationException, AirlineException {
+        if (aircraftValueFunction == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_VALUE_FUNCTION_MESSAGE);
+        }
+        List<Aircraft> aircrafts = collectAircrafts();
+        double accumulator = 0;
+        for (var aircraft : aircrafts) {
+            accumulator += aircraftValueFunction.apply(aircraft).doubleValue();
+        }
+        return accumulator;
+    }
+
+    public List<Aircraft> filterFleet(Predicate<Aircraft> predicate)
+            throws ArgumentValidationException, AirlineException {
+        if (predicate == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_PREDICATE_MESSAGE);
+        }
+        var originalFleet = collectAircrafts();
+        List<Aircraft> filteredFleet = new ArrayList<>();
+        for (var aircraft : originalFleet) {
+            if (predicate.test(aircraft)) {
+                filteredFleet.add(aircraft);
+            }
+        }
+        return filteredFleet;
+    }
+
+    public List<Aircraft> sortFleet(List<Comparator<Aircraft>> comparators)
+            throws ArgumentValidationException, AirlineException {
+        var fleet = collectAircrafts();
+        sortFleet(fleet, comparators);
+        return fleet;
+    }
+
+    public void sortFleet(List<Aircraft> aircrafts, List<Comparator<Aircraft>> comparators)
+            throws ArgumentValidationException {
+        if (aircrafts == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_COLLECTION_MESSAGE);
+        }
+        if (comparators == null || comparators.isEmpty() || comparators.get(0) == null) {
+            throw new ArgumentValidationException(NULL_EMPTY_AIRCRAFT_COMPARATOR_MESSAGE);
+        }
+        Comparator<Aircraft> complexComparator = comparators.get(0);
+        for (var i = 1; i < comparators.size(); i++) {
+            var comparator = comparators.get(i);
+            if (comparator == null) {
+                throw new ArgumentValidationException(NULL_EMPTY_AIRCRAFT_COMPARATOR_MESSAGE);
+            }
+            complexComparator = complexComparator.thenComparing(comparator);
+        }
+        aircrafts.sort(complexComparator);
     }
 
     @Override

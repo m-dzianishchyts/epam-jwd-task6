@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Runner {
 
@@ -19,23 +18,24 @@ public final class Runner {
 
     public static void main(final String[] args) {
         try {
+            List<Aircraft> aircrafts;
             var airline = Airline.getInstance();
-            List<Aircraft> aircrafts = airline.collectAircrafts();
             var fuelConsumptionPredicate = airline.createFilter(airplane -> airplane.getAircraftPerformance()
                                                                                     .getFuelConsumption(), 3000, 6000);
-            var maxRangeComparator = Airline.MAX_RANGE_COMPARATOR;
-            var registrationCodeComparator = Airline.REGISTRATION_CODE_COMPARATOR;
-            var filteredAirplanes = aircrafts.stream()
-                                             .filter(fuelConsumptionPredicate)
-                                             .sorted(maxRangeComparator.thenComparing(registrationCodeComparator))
-                                             .collect(Collectors.toList());
-            for (Aircraft aircraft : filteredAirplanes) {
+
+            aircrafts =  airline.filterFleet(fuelConsumptionPredicate);
+            airline.sortFleet(aircrafts, List.of(Airline.MAX_RANGE_COMPARATOR, Airline.REGISTRATION_CODE_COMPARATOR));
+            for (Aircraft aircraft : aircrafts) {
                 LOGGER.info("{} {} ({}): {} m.",
                             aircraft.getAircraftDocument().getManufacturer(),
                             aircraft.getAircraftDocument().getModelName(),
                             aircraft.getAircraftDocument().getRegistrationCode(),
                             aircraft.getAircraftPerformance().getMaxRange());
             }
+            double totalPassengerCapacity = airline.calculateTotal(Airline.AIRCRAFT_PASSENGER_CAPACITY_FUNCTION);
+            double totalLoadCapacity = airline.calculateTotal(Airline.AIRCRAFT_LOAD_CAPACITY_FUNCTION);
+            LOGGER.info("Total passenger capacity: {}.", String.format("%.0f", totalPassengerCapacity));
+            LOGGER.info("Total load capacity: {}.", String.format("%.3f", totalLoadCapacity));
         } catch (AirlineException | ArgumentValidationException e) {
             LOGGER.error(e.getMessage(), e);
         }
