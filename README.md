@@ -11,4 +11,4 @@
 Найти самолет в компании, соответствующий заданному
 диапазону параметров потребления горючего.
 
-![fleet package](Package%20fleet.png "Fleet package")
+![fleet package](Package%20fleet.png? "Fleet package")
