@@ -1,12 +1,12 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
 import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import static by.jwd.task6.fleet.Aircraft.FINITE_POSITIVE_PREDICATE;
 import static by.jwd.task6.fleet.Aircraft.INVALID_WEIGHT_PROPERTY_MESSAGE;
 
 public class AircraftWeight implements Serializable {
@@ -31,11 +31,13 @@ public class AircraftWeight implements Serializable {
     private float takeoffWeight;
 
     public AircraftWeight(float emptyWeight, float fuelCapacity, float landingWeight, float takeoffWeight)
-            throws IllegalArgumentException {
-        ValidationUtil.validateArgument(emptyWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(fuelCapacity, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(landingWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(takeoffWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+            throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(emptyWeight)
+            || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(fuelCapacity)
+            || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(landingWeight)
+            || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(takeoffWeight)) {
+            throw new ArgumentValidationException(INVALID_WEIGHT_PROPERTY_MESSAGE);
+        }
         this.emptyWeight = emptyWeight;
         this.fuelCapacity = fuelCapacity;
         this.landingWeight = landingWeight;
@@ -49,8 +51,10 @@ public class AircraftWeight implements Serializable {
         return emptyWeight;
     }
 
-    public void setEmptyWeight(float emptyWeight) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(emptyWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setEmptyWeight(float emptyWeight) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(emptyWeight)) {
+            throw new ArgumentValidationException(INVALID_WEIGHT_PROPERTY_MESSAGE);
+        }
         this.emptyWeight = emptyWeight;
     }
 
@@ -58,8 +62,10 @@ public class AircraftWeight implements Serializable {
         return fuelCapacity;
     }
 
-    public void setFuelCapacity(float fuelCapacity) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(fuelCapacity, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setFuelCapacity(float fuelCapacity) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(fuelCapacity)) {
+            throw new ArgumentValidationException(INVALID_WEIGHT_PROPERTY_MESSAGE);
+        }
         this.fuelCapacity = fuelCapacity;
     }
 
@@ -67,8 +73,10 @@ public class AircraftWeight implements Serializable {
         return landingWeight;
     }
 
-    public void setLandingWeight(float landingWeight) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(landingWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setLandingWeight(float landingWeight) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(landingWeight)) {
+            throw new ArgumentValidationException(INVALID_WEIGHT_PROPERTY_MESSAGE);
+        }
         this.landingWeight = landingWeight;
     }
 
@@ -76,8 +84,10 @@ public class AircraftWeight implements Serializable {
         return takeoffWeight;
     }
 
-    public void setTakeoffWeight(float takeoffWeight) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(takeoffWeight, FINITE_POSITIVE_PREDICATE, INVALID_WEIGHT_PROPERTY_MESSAGE);
+    public void setTakeoffWeight(float takeoffWeight) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(takeoffWeight)) {
+            throw new ArgumentValidationException(INVALID_WEIGHT_PROPERTY_MESSAGE);
+        }
         this.takeoffWeight = takeoffWeight;
     }
 

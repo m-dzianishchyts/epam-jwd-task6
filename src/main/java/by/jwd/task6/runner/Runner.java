@@ -3,6 +3,7 @@ package by.jwd.task6.runner;
 import by.jwd.task6.airline.Airline;
 import by.jwd.task6.airline.AirlineException;
 import by.jwd.task6.fleet.Aircraft;
+import by.jwd.task6.util.ArgumentValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,7 +36,7 @@ public final class Runner {
                             aircraft.getAircraftDocument().getRegistrationCode(),
                             aircraft.getAircraftPerformance().getMaxRange());
             }
-        } catch (AirlineException e) {
+        } catch (AirlineException | ArgumentValidationException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }

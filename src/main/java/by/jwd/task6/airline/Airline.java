@@ -12,12 +12,11 @@ import by.jwd.task6.fleet.CargoAircraft;
 import by.jwd.task6.fleet.CargoCompartment;
 import by.jwd.task6.fleet.PassengerAircraft;
 import by.jwd.task6.fleet.PassengerCompartment;
-import by.jwd.task6.util.ValidationUtil;
+import by.jwd.task6.util.ArgumentValidationException;
 
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -126,8 +125,8 @@ public class Airline {
     private Airline() throws AirlineException {
         try {
             aircraftDao = new AircraftSerializationDao<>(new File(SOURCE_FILE_PATH));
-        } catch (DaoException e) {
-            throw new AirlineException("An error occurred while initializing airline.");
+        } catch (DaoException | ArgumentValidationException e) {
+            throw new AirlineException(e.getMessage(), e);
         }
     }
 
@@ -138,8 +137,7 @@ public class Airline {
         return instance;
     }
 
-    public Optional<Aircraft> findAircraftById(int id)
-            throws AirlineException, IllegalArgumentException {
+    public Optional<Aircraft> findAircraftById(int id) throws AirlineException, ArgumentValidationException {
         try {
             Optional<Aircraft> result = aircraftDao.find(id);
             return result;
@@ -157,8 +155,7 @@ public class Airline {
         }
     }
 
-    public void writeOffAircraft(Aircraft aircraft)
-            throws AirlineException, IllegalArgumentException {
+    public void writeOffAircraft(Aircraft aircraft) throws AirlineException, ArgumentValidationException {
         try {
             aircraftDao.remove(aircraft);
         } catch (DaoException e) {
@@ -166,7 +163,7 @@ public class Airline {
         }
     }
 
-    public void acquireAircraft(Aircraft aircraft) throws AirlineException, IllegalArgumentException {
+    public void acquireAircraft(Aircraft aircraft) throws AirlineException, ArgumentValidationException {
         try {
             aircraftDao.insert(aircraft);
         } catch (DaoException e) {
@@ -174,8 +171,7 @@ public class Airline {
         }
     }
 
-    public void replaceAircraft(int id, Aircraft aircraft)
-            throws AirlineException, IllegalArgumentException {
+    public void replaceAircraft(int id, Aircraft aircraft) throws AirlineException, ArgumentValidationException {
         try {
             aircraftDao.set(id, aircraft);
         } catch (DaoException e) {
@@ -184,8 +180,10 @@ public class Airline {
     }
 
     public Predicate<Aircraft> createFilter(Function<Aircraft, Number> aircraftValueFunction, double from, double to)
-            throws IllegalArgumentException {
-        ValidationUtil.validateArgument(aircraftValueFunction, Objects::nonNull, NULL_AIRCRAFT_VALUE_FUNCTION_MESSAGE);
+            throws ArgumentValidationException {
+        if (aircraftValueFunction == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_VALUE_FUNCTION_MESSAGE);
+        }
         return airplane -> {
             Number providedValue = aircraftValueFunction.apply(airplane);
             var valueAsDouble = providedValue.doubleValue();

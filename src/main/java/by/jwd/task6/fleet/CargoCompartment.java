@@ -1,12 +1,11 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
 import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
-
-import static by.jwd.task6.fleet.Aircraft.FINITE_POSITIVE_PREDICATE;
 
 public class CargoCompartment implements Serializable {
 
@@ -43,17 +42,14 @@ public class CargoCompartment implements Serializable {
     private float totalWidth;
 
     public CargoCompartment(float totalHeight, float totalLength, float totalWidth,
-                            float hatchHeight, float hatchWidth) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(totalHeight, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(totalLength, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(totalWidth, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(hatchHeight, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(hatchWidth, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+                            float hatchHeight, float hatchWidth) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(totalHeight)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(totalLength)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(totalWidth)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(hatchHeight)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(hatchWidth)) {
+            throw new ArgumentValidationException(INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+        }
         this.totalHeight = totalHeight;
         this.totalLength = totalLength;
         this.totalWidth = totalWidth;
@@ -78,9 +74,10 @@ public class CargoCompartment implements Serializable {
         return totalHeight;
     }
 
-    public void setTotalHeight(float totalHeight) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(totalHeight, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+    public void setTotalHeight(float totalHeight) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(totalHeight)) {
+            throw new ArgumentValidationException(INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+        }
         this.totalHeight = totalHeight;
     }
 
@@ -88,9 +85,10 @@ public class CargoCompartment implements Serializable {
         return totalLength;
     }
 
-    public void setTotalLength(float totalLength) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(totalLength, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+    public void setTotalLength(float totalLength) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(totalLength)) {
+            throw new ArgumentValidationException(INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+        }
         this.totalLength = totalLength;
     }
 
@@ -98,9 +96,10 @@ public class CargoCompartment implements Serializable {
         return totalWidth;
     }
 
-    public void setTotalWidth(float totalWidth) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(totalWidth, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+    public void setTotalWidth(float totalWidth) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(totalWidth)) {
+            throw new ArgumentValidationException(INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+        }
         this.totalWidth = totalWidth;
     }
 
@@ -108,9 +107,10 @@ public class CargoCompartment implements Serializable {
         return hatchHeight;
     }
 
-    public void setHatchHeight(float hatchHeight) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(hatchHeight, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+    public void setHatchHeight(float hatchHeight) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(hatchHeight)) {
+            throw new ArgumentValidationException(INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+        }
         this.hatchHeight = hatchHeight;
     }
 
@@ -118,9 +118,10 @@ public class CargoCompartment implements Serializable {
         return hatchWidth;
     }
 
-    public void setHatchWidth(float hatchWidth) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(hatchWidth, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+    public void setHatchWidth(float hatchWidth) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(hatchWidth)) {
+            throw new ArgumentValidationException(INVALID_CARGO_COMPARTMENT_PROPERTY_MESSAGE);
+        }
         this.hatchWidth = hatchWidth;
     }
 

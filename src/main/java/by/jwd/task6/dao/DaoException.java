@@ -2,6 +2,8 @@ package by.jwd.task6.dao;
 
 public class DaoException extends Exception {
 
+    private static final long serialVersionUID = -6900710934523202568L;
+
     public DaoException() {
     }
 

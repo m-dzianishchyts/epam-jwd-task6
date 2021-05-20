@@ -1,12 +1,12 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
 import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import static by.jwd.task6.fleet.Aircraft.FINITE_POSITIVE_PREDICATE;
 import static by.jwd.task6.fleet.Aircraft.INVALID_FLIGHT_PROPERTY_MESSAGE;
 
 public class AircraftPerformance implements Serializable {
@@ -31,12 +31,13 @@ public class AircraftPerformance implements Serializable {
     private float maxRange;
 
     public AircraftPerformance(float cruisingSpeed, float fuelConsumption, float maxAttitude, float maxRange)
-            throws IllegalArgumentException {
-        ValidationUtil.validateArgument(cruisingSpeed, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(fuelConsumption, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_FLIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(maxAttitude, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(maxRange, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+            throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(cruisingSpeed)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(fuelConsumption)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(maxAttitude)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(maxRange)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.cruisingSpeed = cruisingSpeed;
         this.fuelConsumption = fuelConsumption;
         this.maxAttitude = maxAttitude;
@@ -50,8 +51,10 @@ public class AircraftPerformance implements Serializable {
         return cruisingSpeed;
     }
 
-    public void setCruisingSpeed(float cruisingSpeed) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(cruisingSpeed, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+    public void setCruisingSpeed(float cruisingSpeed) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(cruisingSpeed)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.cruisingSpeed = cruisingSpeed;
     }
 
@@ -59,8 +62,10 @@ public class AircraftPerformance implements Serializable {
         return maxAttitude;
     }
 
-    public void setMaxAttitude(float maxAttitude) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(maxAttitude, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+    public void setMaxAttitude(float maxAttitude) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(maxAttitude)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.maxAttitude = maxAttitude;
     }
 
@@ -68,8 +73,10 @@ public class AircraftPerformance implements Serializable {
         return maxRange;
     }
 
-    public void setMaxRange(float maxRange) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(maxRange, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+    public void setMaxRange(float maxRange) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(maxRange)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.maxRange = maxRange;
     }
 
@@ -77,9 +84,10 @@ public class AircraftPerformance implements Serializable {
         return fuelConsumption;
     }
 
-    public void setFuelConsumption(float fuelConsumption) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(fuelConsumption, FINITE_POSITIVE_PREDICATE,
-                                        INVALID_FLIGHT_PROPERTY_MESSAGE);
+    public void setFuelConsumption(float fuelConsumption) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(fuelConsumption)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.fuelConsumption = fuelConsumption;
     }
 

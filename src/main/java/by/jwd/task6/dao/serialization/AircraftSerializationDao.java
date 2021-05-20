@@ -2,7 +2,7 @@ package by.jwd.task6.dao.serialization;
 
 import by.jwd.task6.dao.DaoException;
 import by.jwd.task6.fleet.Aircraft;
-import by.jwd.task6.util.ValidationUtil;
+import by.jwd.task6.util.ArgumentValidationException;
 
 import java.io.EOFException;
 import java.io.File;
@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class AircraftSerializationDao<A extends Aircraft> extends SerializationDao<A> {
@@ -21,13 +20,15 @@ public class AircraftSerializationDao<A extends Aircraft> extends SerializationD
      */
     protected static final String NULL_AIRCRAFT_MESSAGE = "Aircraft cannot be null.";
 
-    public AircraftSerializationDao(File source) throws DaoException, IllegalArgumentException {
+    public AircraftSerializationDao(File source) throws DaoException, ArgumentValidationException {
         super(source);
     }
 
     @Override
-    public Optional<A> find(int id) throws DaoException {
-        ValidationUtil.validateArgument(id, n -> n >= 0, INVALID_ID_MESSAGE);
+    public Optional<A> find(int id) throws DaoException, ArgumentValidationException {
+        if (id <= 0) {
+            throw new ArgumentValidationException(INVALID_ID_MESSAGE);
+        }
         List<A> aircrafts = findAll();
         int targetIndex = defineIndexById(id, aircrafts);
         if (targetIndex < 0) {
@@ -37,16 +38,20 @@ public class AircraftSerializationDao<A extends Aircraft> extends SerializationD
         return Optional.of(target);
     }
 
-    public void insert(A aircraft) throws DaoException, IllegalArgumentException {
-        ValidationUtil.validateArgument(aircraft, Objects::nonNull, NULL_AIRCRAFT_MESSAGE);
+    public void insert(A aircraft) throws DaoException, ArgumentValidationException {
+        if (aircraft == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_MESSAGE);
+        }
         List<A> aircrafts = findAll();
         aircrafts.add(aircraft);
         updateFile(aircrafts);
     }
 
     @Override
-    public void remove(A aircraft) throws DaoException {
-        ValidationUtil.validateArgument(aircraft, Objects::nonNull, NULL_AIRCRAFT_MESSAGE);
+    public void remove(A aircraft) throws DaoException, ArgumentValidationException {
+        if (aircraft == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_MESSAGE);
+        }
         List<A> aircrafts = findAll();
         boolean removalResult = aircrafts.remove(aircraft);
         if (!removalResult) {
@@ -56,9 +61,13 @@ public class AircraftSerializationDao<A extends Aircraft> extends SerializationD
     }
 
     @Override
-    public void set(int id, A replacingAircraft) throws DaoException, IllegalArgumentException {
-        ValidationUtil.validateArgument(replacingAircraft, Objects::nonNull, NULL_AIRCRAFT_MESSAGE);
-        ValidationUtil.validateArgument(id, n -> n >= 0, INVALID_ID_MESSAGE);
+    public void set(int id, A replacingAircraft) throws DaoException, ArgumentValidationException {
+        if (id <= 0) {
+            throw new ArgumentValidationException(INVALID_ID_MESSAGE);
+        }
+        if (replacingAircraft == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_MESSAGE);
+        }
         List<A> aircrafts = findAll();
         int targetIndex = defineIndexById(id, aircrafts);
         if (targetIndex < 0) {

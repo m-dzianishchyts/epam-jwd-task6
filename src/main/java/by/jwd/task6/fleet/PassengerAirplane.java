@@ -1,9 +1,7 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
-import by.jwd.task6.util.ValidationUtil;
-
-import java.util.Objects;
 
 public class PassengerAirplane extends Airplane implements PassengerAircraft {
 
@@ -19,14 +17,16 @@ public class PassengerAirplane extends Airplane implements PassengerAircraft {
     public PassengerAirplane(int id, AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
                              AircraftWeight aircraftWeight, AircraftDocument aircraftDocument,
                              PassengerCompartment passengerCompartment, float takeoffDistance,
-                             float landingDistance) throws IllegalArgumentException {
+                             float landingDistance) throws ArgumentValidationException {
         super(id, aircraftPerformance, aircraftSize, aircraftWeight, aircraftDocument, takeoffDistance,
               landingDistance);
-        ValidationUtil.validateArgument(passengerCompartment, Objects::nonNull, NULL_PASSENGER_COMPARTMENT_MESSAGE);
+        if (passengerCompartment == null) {
+            throw new ArgumentValidationException(NULL_PASSENGER_COMPARTMENT_MESSAGE);
+        }
         this.passengerCompartment = passengerCompartment;
     }
 
-    public PassengerAirplane(int id) throws IllegalArgumentException {
+    public PassengerAirplane(int id) throws ArgumentValidationException {
         super(id);
     }
 
@@ -39,8 +39,10 @@ public class PassengerAirplane extends Airplane implements PassengerAircraft {
     }
 
     @Override
-    public void setPassengerCompartment(PassengerCompartment passengerCompartment) {
-        ValidationUtil.validateArgument(passengerCompartment, Objects::nonNull, NULL_PASSENGER_COMPARTMENT_MESSAGE);
+    public void setPassengerCompartment(PassengerCompartment passengerCompartment) throws ArgumentValidationException {
+        if (passengerCompartment == null) {
+            throw new ArgumentValidationException(NULL_PASSENGER_COMPARTMENT_MESSAGE);
+        }
         this.passengerCompartment = passengerCompartment;
     }
 

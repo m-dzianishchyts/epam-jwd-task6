@@ -1,18 +1,18 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
-import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.function.Predicate;
 
 public abstract class Aircraft implements Serializable {
 
     /**
-     * Predicate for validating aircraft parameters.
+     * Aircraft model properties exception messages.
      */
-    protected static final Predicate<Float> FINITE_POSITIVE_PREDICATE = number -> number > 0 && Float.isFinite(number);
+    protected static final String INVALID_SIZE_PROPERTY_MESSAGE = "Size property must be finite and positive.";
+    protected static final String INVALID_FLIGHT_PROPERTY_MESSAGE = "Flight property must be finite and positive.";
+    protected static final String INVALID_WEIGHT_PROPERTY_MESSAGE = "Weight property must be finite and positive.";
 
     /**
      * Aircraft own exception messages.
@@ -23,28 +23,32 @@ public abstract class Aircraft implements Serializable {
     protected static final String NULL_AIRCRAFT_SIZE_MESSAGE = "Aircraft size cannot be null.";
     protected static final String NULL_AIRCRAFT_WEIGHT_MESSAGE = "Aircraft weight cannot be null.";
 
-    /**
-     * Aircraft model properties exception messages.
-     */
-    protected static final String INVALID_SIZE_PROPERTY_MESSAGE = "Size property must be finite and positive.";
-    protected static final String INVALID_WEIGHT_PROPERTY_MESSAGE = "Weight property must be finite and positive.";
-    protected static final String INVALID_FLIGHT_PROPERTY_MESSAGE = "Flight property must be finite and positive.";
-
     private static final long serialVersionUID = 6716985004306569600L;
 
+    private final int id;
     private AircraftDocument aircraftDocument;
     private AircraftPerformance aircraftPerformance;
     private AircraftSize aircraftSize;
     private AircraftWeight aircraftWeight;
-    private final int id;
 
     protected Aircraft(int id, AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
-                    AircraftWeight aircraftWeight, AircraftDocument aircraftDocument) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(aircraftPerformance, Objects::nonNull, NULL_AIRCRAFT_PERFORMANCE_MESSAGE);
-        ValidationUtil.validateArgument(aircraftSize, Objects::nonNull, NULL_AIRCRAFT_SIZE_MESSAGE);
-        ValidationUtil.validateArgument(aircraftWeight, Objects::nonNull, NULL_AIRCRAFT_WEIGHT_MESSAGE);
-        ValidationUtil.validateArgument(aircraftDocument, Objects::nonNull, NULL_AIRCRAFT_DOCUMENT_MESSAGE);
-        ValidationUtil.validateArgument(id, n -> n >= 0, INVALID_ID_MESSAGE);
+                       AircraftWeight aircraftWeight, AircraftDocument aircraftDocument)
+            throws ArgumentValidationException {
+        if (aircraftPerformance == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_PERFORMANCE_MESSAGE);
+        }
+        if (aircraftSize == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_SIZE_MESSAGE);
+        }
+        if (aircraftWeight == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_WEIGHT_MESSAGE);
+        }
+        if (aircraftDocument == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_DOCUMENT_MESSAGE);
+        }
+        if (id < 0) {
+            throw new ArgumentValidationException(INVALID_ID_MESSAGE);
+        }
         this.id = id;
         this.aircraftDocument = aircraftDocument;
         this.aircraftPerformance = aircraftPerformance;
@@ -52,8 +56,10 @@ public abstract class Aircraft implements Serializable {
         this.aircraftWeight = aircraftWeight;
     }
 
-    protected Aircraft(int id) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(id, n -> n >= 0, INVALID_ID_MESSAGE);
+    protected Aircraft(int id) throws ArgumentValidationException {
+        if (id < 0) {
+            throw new ArgumentValidationException(INVALID_ID_MESSAGE);
+        }
         this.id = id;
         aircraftDocument = new AircraftDocument();
         aircraftPerformance = new AircraftPerformance();
@@ -62,7 +68,11 @@ public abstract class Aircraft implements Serializable {
     }
 
     protected Aircraft() {
-        this(0);
+        this.id = 0;
+        aircraftDocument = new AircraftDocument();
+        aircraftPerformance = new AircraftPerformance();
+        aircraftSize = new AircraftSize();
+        aircraftWeight = new AircraftWeight();
     }
 
     public int getId() {
@@ -73,8 +83,10 @@ public abstract class Aircraft implements Serializable {
         return aircraftDocument;
     }
 
-    public void setAircraftDocument(AircraftDocument aircraftDocument) {
-        ValidationUtil.validateArgument(aircraftDocument, Objects::nonNull, NULL_AIRCRAFT_DOCUMENT_MESSAGE);
+    public void setAircraftDocument(AircraftDocument aircraftDocument) throws ArgumentValidationException {
+        if (aircraftDocument == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_DOCUMENT_MESSAGE);
+        }
         this.aircraftDocument = aircraftDocument;
     }
 
@@ -82,8 +94,10 @@ public abstract class Aircraft implements Serializable {
         return aircraftPerformance;
     }
 
-    public void setAircraftPerformance(AircraftPerformance aircraftPerformance) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(aircraftPerformance, Objects::nonNull, NULL_AIRCRAFT_PERFORMANCE_MESSAGE);
+    public void setAircraftPerformance(AircraftPerformance aircraftPerformance) throws ArgumentValidationException {
+        if (aircraftPerformance == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_PERFORMANCE_MESSAGE);
+        }
         this.aircraftPerformance = aircraftPerformance;
     }
 
@@ -91,8 +105,10 @@ public abstract class Aircraft implements Serializable {
         return aircraftSize;
     }
 
-    public void setAircraftSize(AircraftSize aircraftSize) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(aircraftSize, Objects::nonNull, NULL_AIRCRAFT_SIZE_MESSAGE);
+    public void setAircraftSize(AircraftSize aircraftSize) throws ArgumentValidationException {
+        if (aircraftSize == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_SIZE_MESSAGE);
+        }
         this.aircraftSize = aircraftSize;
     }
 
@@ -100,8 +116,10 @@ public abstract class Aircraft implements Serializable {
         return aircraftWeight;
     }
 
-    public void setAircraftWeight(AircraftWeight aircraftWeight) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(aircraftWeight, Objects::nonNull, NULL_AIRCRAFT_WEIGHT_MESSAGE);
+    public void setAircraftWeight(AircraftWeight aircraftWeight) throws ArgumentValidationException {
+        if (aircraftWeight == null) {
+            throw new ArgumentValidationException(NULL_AIRCRAFT_WEIGHT_MESSAGE);
+        }
         this.aircraftWeight = aircraftWeight;
     }
 

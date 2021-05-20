@@ -1,7 +1,7 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
-import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -23,8 +23,10 @@ public class PassengerCompartment implements Serializable {
 
     private int passengersCapacity;
 
-    public PassengerCompartment(int passengersCapacity) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(passengersCapacity, n -> n > 0, INVALID_PASSENGERS_CAPACITY_MESSAGE);
+    public PassengerCompartment(int passengersCapacity) throws ArgumentValidationException {
+        if (passengersCapacity <= 0) {
+            throw new ArgumentValidationException(INVALID_PASSENGERS_CAPACITY_MESSAGE);
+        }
         this.passengersCapacity = passengersCapacity;
     }
 
@@ -35,8 +37,10 @@ public class PassengerCompartment implements Serializable {
         return passengersCapacity;
     }
 
-    public void setPassengersCapacity(int passengersCapacity) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(passengersCapacity, n -> n > 0, INVALID_PASSENGERS_CAPACITY_MESSAGE);
+    public void setPassengersCapacity(int passengersCapacity) throws ArgumentValidationException {
+        if (passengersCapacity <= 0) {
+            throw new ArgumentValidationException(INVALID_PASSENGERS_CAPACITY_MESSAGE);
+        }
         this.passengersCapacity = passengersCapacity;
     }
 

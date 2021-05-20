@@ -1,5 +1,6 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
 import by.jwd.task6.util.ValidationUtil;
 
@@ -12,15 +13,17 @@ public class Airplane extends Aircraft {
 
     public Airplane(int id, AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
                     AircraftWeight aircraftWeight, AircraftDocument aircraftDocument,
-                    float takeoffDistance, float landingDistance) throws IllegalArgumentException {
+                    float takeoffDistance, float landingDistance) throws ArgumentValidationException {
         super(id, aircraftPerformance, aircraftSize, aircraftWeight, aircraftDocument);
-        ValidationUtil.validateArgument(takeoffDistance, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
-        ValidationUtil.validateArgument(landingDistance, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(takeoffDistance)
+              || !ValidationUtil.FINITE_POSITIVE_PREDICATE.test(landingDistance)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.takeoffDistance = takeoffDistance;
         this.landingDistance = landingDistance;
     }
 
-    public Airplane(int id) throws IllegalArgumentException {
+    public Airplane(int id) throws ArgumentValidationException {
         super(id);
     }
 
@@ -64,8 +67,10 @@ public class Airplane extends Aircraft {
         return takeoffDistance;
     }
 
-    public void setTakeoffDistance(float takeoffDistance) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(takeoffDistance, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+    public void setTakeoffDistance(float takeoffDistance) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(takeoffDistance)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.takeoffDistance = takeoffDistance;
     }
 
@@ -73,8 +78,10 @@ public class Airplane extends Aircraft {
         return landingDistance;
     }
 
-    public void setLandingDistance(float landingDistance) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(landingDistance, FINITE_POSITIVE_PREDICATE, INVALID_FLIGHT_PROPERTY_MESSAGE);
+    public void setLandingDistance(float landingDistance) throws ArgumentValidationException {
+        if (!ValidationUtil.FINITE_POSITIVE_PREDICATE.test(landingDistance)) {
+            throw new ArgumentValidationException(INVALID_FLIGHT_PROPERTY_MESSAGE);
+        }
         this.landingDistance = landingDistance;
     }
 }

@@ -1,11 +1,10 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
-import by.jwd.task6.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.Objects;
 
 public class AircraftDocument implements Serializable {
 
@@ -37,11 +36,19 @@ public class AircraftDocument implements Serializable {
     private String registrationCode;
 
     public AircraftDocument(String manufacturer, String modelName, String registrationCode, String notes)
-            throws IllegalArgumentException {
-        ValidationUtil.validateArgument(manufacturer, Objects::nonNull, NULL_MANUFACTURER_MESSAGE);
-        ValidationUtil.validateArgument(modelName, Objects::nonNull, NULL_MODEL_NAME_MESSAGE);
-        ValidationUtil.validateArgument(registrationCode, Objects::nonNull, NULL_REGISTRATION_CODE_MESSAGE);
-        ValidationUtil.validateArgument(notes, Objects::nonNull, NULL_NOTES_MESSAGE);
+            throws ArgumentValidationException {
+        if (manufacturer == null) {
+            throw new ArgumentValidationException(NULL_MANUFACTURER_MESSAGE);
+        }
+        if (modelName == null) {
+            throw new ArgumentValidationException(NULL_MODEL_NAME_MESSAGE);
+        }
+        if (registrationCode == null) {
+            throw new ArgumentValidationException(NULL_REGISTRATION_CODE_MESSAGE);
+        }
+        if (notes == null) {
+            throw new ArgumentValidationException(NULL_NOTES_MESSAGE);
+        }
         this.manufacturer = manufacturer;
         this.modelName = modelName;
         this.registrationCode = registrationCode;
@@ -59,8 +66,10 @@ public class AircraftDocument implements Serializable {
         return manufacturer;
     }
 
-    public void setManufacturer(String manufacturer) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(manufacturer, Objects::nonNull, NULL_MANUFACTURER_MESSAGE);
+    public void setManufacturer(String manufacturer) throws ArgumentValidationException {
+        if (manufacturer == null) {
+            throw new ArgumentValidationException(NULL_MANUFACTURER_MESSAGE);
+        }
         this.manufacturer = manufacturer;
     }
 
@@ -68,8 +77,10 @@ public class AircraftDocument implements Serializable {
         return modelName;
     }
 
-    public void setModelName(String modelName) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(modelName, Objects::nonNull, NULL_MODEL_NAME_MESSAGE);
+    public void setModelName(String modelName) throws ArgumentValidationException {
+        if (modelName == null) {
+            throw new ArgumentValidationException(NULL_MODEL_NAME_MESSAGE);
+        }
         this.modelName = modelName;
     }
 
@@ -77,8 +88,10 @@ public class AircraftDocument implements Serializable {
         return notes;
     }
 
-    public void setNotes(String notes) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(notes, Objects::nonNull, NULL_NOTES_MESSAGE);
+    public void setNotes(String notes) throws ArgumentValidationException {
+        if (notes == null) {
+            throw new ArgumentValidationException(NULL_NOTES_MESSAGE);
+        }
         this.notes = notes;
     }
 
@@ -86,8 +99,10 @@ public class AircraftDocument implements Serializable {
         return registrationCode;
     }
 
-    public void setRegistrationCode(String registrationCode) throws IllegalArgumentException {
-        ValidationUtil.validateArgument(registrationCode, Objects::nonNull, NULL_REGISTRATION_CODE_MESSAGE);
+    public void setRegistrationCode(String registrationCode) throws ArgumentValidationException {
+        if (registrationCode == null) {
+            throw new ArgumentValidationException(NULL_REGISTRATION_CODE_MESSAGE);
+        }
         this.registrationCode = registrationCode;
     }
 

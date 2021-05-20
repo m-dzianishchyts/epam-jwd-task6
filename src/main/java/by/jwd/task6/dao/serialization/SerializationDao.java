@@ -2,8 +2,8 @@ package by.jwd.task6.dao.serialization;
 
 import by.jwd.task6.dao.DaoException;
 import by.jwd.task6.dao.DataAccessObject;
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
-import by.jwd.task6.util.ValidationUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,8 +28,10 @@ public abstract class SerializationDao<T> implements DataAccessObject<T> {
 
     private final File source;
 
-    protected SerializationDao(File source) throws DaoException, IllegalArgumentException {
-        ValidationUtil.validateArgument(source, Objects::nonNull, NULL_SOURCE_FILE_MESSAGE);
+    protected SerializationDao(File source) throws DaoException, ArgumentValidationException {
+        if (source == null) {
+            throw new ArgumentValidationException(NULL_SOURCE_FILE_MESSAGE);
+        }
         if (!source.exists()) {
             try {
                 boolean fileCreatedSuccessfully = source.createNewFile();
@@ -40,7 +42,9 @@ public abstract class SerializationDao<T> implements DataAccessObject<T> {
                 throw new DaoException(CANNOT_CREATE_SOURCE_FILE_MESSAGE, e);
             }
         }
-        ValidationUtil.validateArgument(source, File::canRead, NON_READABLE_SOURCE_FILE_MESSAGE);
+        if (!source.canRead()) {
+            throw new ArgumentValidationException(NON_READABLE_SOURCE_FILE_MESSAGE);
+        }
         this.source = source;
     }
 

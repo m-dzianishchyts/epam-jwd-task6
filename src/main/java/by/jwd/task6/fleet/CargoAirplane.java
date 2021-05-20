@@ -1,9 +1,7 @@
 package by.jwd.task6.fleet;
 
+import by.jwd.task6.util.ArgumentValidationException;
 import by.jwd.task6.util.HashUtil;
-import by.jwd.task6.util.ValidationUtil;
-
-import java.util.Objects;
 
 public class CargoAirplane extends Airplane implements CargoAircraft {
 
@@ -19,14 +17,16 @@ public class CargoAirplane extends Airplane implements CargoAircraft {
     public CargoAirplane(int id, AircraftPerformance aircraftPerformance, AircraftSize aircraftSize,
                          AircraftWeight aircraftWeight, AircraftDocument aircraftDocument,
                          CargoCompartment cargoCompartment, float takeoffDistance,
-                         float landingDistance) throws IllegalArgumentException {
+                         float landingDistance) throws ArgumentValidationException {
         super(id, aircraftPerformance, aircraftSize, aircraftWeight, aircraftDocument, takeoffDistance,
               landingDistance);
-        ValidationUtil.validateArgument(cargoCompartment, Objects::nonNull, NULL_CARGO_COMPARTMENT_MESSAGE);
+        if (cargoCompartment == null) {
+            throw new ArgumentValidationException(NULL_CARGO_COMPARTMENT_MESSAGE);
+        }
         this.cargoCompartment = cargoCompartment;
     }
 
-    public CargoAirplane(int id) throws IllegalArgumentException {
+    public CargoAirplane(int id) throws ArgumentValidationException {
         super(id);
     }
 
@@ -39,8 +39,10 @@ public class CargoAirplane extends Airplane implements CargoAircraft {
     }
 
     @Override
-    public void setCargoCompartment(CargoCompartment cargoCompartment) {
-        ValidationUtil.validateArgument(cargoCompartment, Objects::nonNull, NULL_CARGO_COMPARTMENT_MESSAGE);
+    public void setCargoCompartment(CargoCompartment cargoCompartment) throws ArgumentValidationException {
+        if (cargoCompartment == null) {
+            throw new ArgumentValidationException(NULL_CARGO_COMPARTMENT_MESSAGE);
+        }
         this.cargoCompartment = cargoCompartment;
     }
 
